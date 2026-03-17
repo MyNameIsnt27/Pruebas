@@ -1,13 +1,14 @@
 body {
   text-align: center;
-  font-family: Arial;
+  font-family: Risopop;
 }
 
 h1 {
-  color: blue;
+  color: orange;
 }
 
 button {
   padding: 10px;
+  margin: 5px;
   font-size: 16px;
 }
