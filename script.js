@@ -1,112 +1,125 @@
-//  1. Buscar elementos del HTML
+// =======================
+//  ELEMENTOS HTML
+// =======================
+
 let texto = document.getElementById("contador");
 let texto2 = document.getElementById("sumador");
+let textoauto = document.getElementById("auto");
+let textocoste = document.getElementById("coste");
+
 let boton = document.getElementById("boton");
 let boton2 = document.getElementById("boton2");
+let botonauto = document.getElementById("botonauto");
 let reset = document.getElementById("reset");
-let sumador  = document.getElementById("sumador");
-sumador = 1;
-let coste = 15;
+
+
+// =======================
+//  VARIABLES
+// =======================
+
+let contador = 0;
+let sumador = 1;
 let auto = 0;
-let textoauto = document.getElementById("auto");
+let coste = 15;
 
-//  2. Intentar cargar valor guardado
+
+// =======================
+//  CARGAR DATOS
+// =======================
+
 let guardado = localStorage.getItem("contador");
+if (guardado !== null) contador = parseInt(guardado);
+
 let guardado2 = localStorage.getItem("sumador");
-
-// 3. Crear variable contador
-let contador;
-
-// 4. Comprobar si había algo guardado
-if (guardado !== null) {
-  // Si hay valor → convertirlo a número
-  contador = parseInt(guardado);
-} else {
-  // Si no hay nada empezar en 0
-  contador = 0;
-}
-
-if (guardado2 !== null) {
-  // Si hay valor → convertirlo a número
-  sumador = parseInt(guardado2);
-} else {
-  // Si no hay nada empezar en 0
-  sumador = 1;
-}
-
+if (guardado2 !== null) sumador = parseInt(guardado2);
 
 let guardadoauto = localStorage.getItem("auto");
+if (guardadoauto !== null) auto = parseInt(guardadoauto);
 
-if (guardadoauto !== null) {
-  auto = parseInt(guardadoauto);
-} else {
-auto = 0 
-}
+let guardadocoste = localStorage.getItem("coste");
+if (guardadocoste !== null) coste = parseInt(guardadocoste);
 
 
+// =======================
+//  MOSTRAR EN PANTALLA
+// =======================
 
-
-
-// 5. Mostrar valor inicial en pantalla
 texto.textContent = contador;
 texto2.textContent = sumador;
+textoauto.textContent = auto;
+textocoste.textContent = coste;
 
 
-//  6. Cuando haces click en sumar
-boton.onclick = function() {
+// =============================
+//  FUNCIONES (ahorrar codigo)
+// =============================
 
-  // Sumar 1
-  contador = contador + sumador;
-
-  // Actualizar pantalla
-  texto.textContent = contador;
-
-  // Guardar en localStorage
-  localStorage.setItem("contador", contador);
-};
-
-//  7. Botón reset
-reset.onclick = function() {
-
-  // Volver a 0
-  contador = 0;
-  sumador = 1;
-  auto = 0;
-  coste = 15;
-
-  // Actualizar pantalla
+function actualizarUI() {
   texto.textContent = contador;
   texto2.textContent = sumador;
+  textoauto.textContent = auto;
+  textocoste.textContent = coste;
+}
 
+function guardar() {
+  localStorage.setItem("contador", contador);
+  localStorage.setItem("sumador", sumador);
+  localStorage.setItem("auto", auto);
+  localStorage.setItem("coste", coste);
+}
 
-  // Borrar guardado
-  localStorage.removeItem("contador");
-  localStorage.removeItem("sumador");
+// =======================
+//  BOTÓN CLICK
+// =======================
+
+boton.onclick = function() {
+  contador = contador + sumador;
+
+  texto.textContent = contador;
+
+  localStorage.setItem("contador", contador);                                                             //SEIS SIETE 676767676767
 };
+
+
+// =======================
+//  BOTÓN MEJORA
+// =======================
 
 boton2.onclick = function() {
 
-  // funcion principal
-  
-if (contador >= coste) {
-  contador = contador - coste;
-  sumador = sumador + 1;
-  texto2.textContent = sumador;
-  texto.textContent = contador;
-  coste = coste + 20;
-}
+  if (contador >= coste) {
+    contador = contador - coste;
+    sumador = sumador + 1;
+    coste = coste + 20;
+  }
 
-  // Actualizar pantalla
-  texto2.textContent = sumador;
-
-
-  // Guardar en localStorage
-  localStorage.setItem("sumador", sumador);
+ actualizarUI();
+ guardar();
+ 
 };
 
 
-	// auto click
-	
+// =======================
+//  BOTÓN AUTOCLICK
+// =======================
+
+botonauto.onclick = function() {
+
+  if (contador >= (coste + 20)) {
+    contador = contador - (coste + 20);
+    auto = auto + 1;
+    coste = coste + 20;
+  }
+
+  actualizarUI();
+  guardar();
+};
+
+
+// =======================
+//  AUTO CLICK TIEMPO
+// =======================
+
 setInterval(function() {
 
   contador = contador + auto;
@@ -114,30 +127,21 @@ setInterval(function() {
   texto.textContent = contador;
 
   localStorage.setItem("contador", contador);
-  
-  textoauto.textContent = auto;
 
 }, 1000);
 
 
+// =======================
+//  RESET
+// =======================
 
-	//boton autoclick
-	
-let botonauto = document.getElementById("botonauto");
-	
-botonauto.onclick = function() {
+reset.onclick = function() {
 
-  if (contador >= 50) {
-    contador -= 50;
-    auto += 1;
+  contador = 0;
+  sumador = 1;
+  auto = 0;
+  coste = 15;
 
-    texto.textContent = contador;
-    textoauto.textContent = auto;
-
-    localStorage.setItem("contador", contador);
-    localStorage.setItem("auto", auto);
-  }
-
+  actualizarUI();
+  guardar();
 };
-
-
